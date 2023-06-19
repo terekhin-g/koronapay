@@ -4,6 +4,8 @@ interface EntityRepository {
     saveAll(entityDTOs: IEntityDTO[]): Promise<IEntityDTO[]>;
 
     deleteAll(): Promise<number>;
+
+    findAll(filter: (entityDTO: IEntityDTO) => boolean): Promise<IEntityDTO[]>;
 }
 
 export {EntityRepository};

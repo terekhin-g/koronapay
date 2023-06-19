@@ -38,6 +38,18 @@ class EntityRepositoryImpl implements EntityRepository {
         return entityDTOs;
     }
 
+    async findAll(filter: (entityDTO: IEntityDTO) => boolean): Promise<IEntityDTO[]> {
+        if (!await this.fileService.exists(this.DIRECTORY)) {
+            return [];
+        }
+        if (!await this.fileService.exists(this.FILENAME)) {
+            return [];
+        }
+        const buffer: Buffer = await this.fileService.readFile(this.FILENAME);
+        const data: IEntityDTO[] = JSON.parse(buffer.toString())
+        return data.filter(filter);
+    }
+
 }
 
 export {EntityRepositoryImpl};
