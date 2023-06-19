@@ -14,6 +14,20 @@ class EntityServiceImpl implements EntityService {
         return await this.entityRepository.deleteAll();
     }
 
+    async getEntityDTOs(
+        sendingCountryId: string,
+        receivingCountryId: string,
+        sendingCurrencyCode: string,
+        receivingCurrencyCode: string
+    ): Promise<IEntityDTO[]> {
+        return await this.entityRepository.findAll((entityDTO: IEntityDTO) => {
+            return entityDTO.sendingCountryId === sendingCountryId &&
+                entityDTO.receivingCountryId === receivingCountryId &&
+                entityDTO.sendingCurrencyCode === sendingCurrencyCode &&
+                entityDTO.receivingCurrencyCode === receivingCurrencyCode
+        });
+    }
+
 }
 
 export {EntityServiceImpl};
