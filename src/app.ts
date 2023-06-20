@@ -2,8 +2,6 @@
 
 import {ITariffInfoDTO} from "./domain/koronapay/tariff-info.dto.js";
 import {ITariffDTO} from "./domain/koronapay/tariff.dto.js";
-import yargs, {ArgumentsCamelCase} from "yargs";
-import {hideBin} from "yargs/helpers";
 import {KoronapayServiceImpl} from "./service/impl/koronapay.service.impl.js";
 import {IEntityDTO} from "./domain/entity.dto.js";
 import {PrintServiceImpl} from "./service/impl/print.service.impl.js";
@@ -13,47 +11,18 @@ import {KoronapayService} from "./service/koronapay.service.js";
 import {PrintService} from "./service/print.service.js";
 import {EntityService} from "./service/entity.service.js";
 import {EntityServiceImpl} from "./service/impl/entity.service.impl.js";
+import {plot} from 'asciichart';
+
+const printService: PrintService = new PrintServiceImpl();
+const entityService: EntityService = new EntityServiceImpl();
 
 const main = async (): Promise<void> => {
 
-    yargs(hideBin(process.argv))
-        .command(
-            'current',
-            'Отобразить текущие курсы валют',
-            () => {
-            },
-            ({save, from, to}: ArgumentsCamelCase<{ save: boolean, from: string, to: string[] }>) => {
-                return current(save, from, to);
-            }
-        )
-        .option('save', {
-            alias: 's',
-            type: 'boolean',
-            description: 'Сохранить полученные данные в историю',
-            default: true
-        })
-        .option('from', {
-            alias: 'f',
-            type: 'string',
-            description: 'Страна отправки',
-            default: 'RUS'
-        })
-        .option('to', {
-            alias: 't',
-            type: 'array',
-            description: 'Страна назначения',
-            default: [
-                'GEO'
-            ],
-            choices: ['GEO', 'KGZ', 'UZB', 'TJK', 'AZE', 'TUR', 'MDA', 'KAZ', 'BLR', 'CYP', 'ISR', 'SRB', 'KOR', 'VNM']
-        })
-        .parse();
 }
 
 const current = async (save: boolean, sendingCountryId: string, receivingCountryIds: string[]): Promise<void> => {
-    const printService: PrintService = new PrintServiceImpl();
     try {
-        const entityDTOs = await entities(sendingCountryId, receivingCountryIds);
+        const entityDTOs: IEntityDTO[] = await entities(sendingCountryId, receivingCountryIds);
         printService.success('Данные успешно загружены.')
         const asciiTable3: AsciiTable3 = new AsciiTable3('Курс валют')
             .setHeading('Страна отправления', 'Страна получения', 'Валюта отправления', 'Валюта получения', 'Курс')
@@ -66,13 +35,45 @@ const current = async (save: boolean, sendingCountryId: string, receivingCountry
             ]));
         printService.log(asciiTable3.toString());
         if (save) {
-            const entityService: EntityService = new EntityServiceImpl();
             await entityService.createEntities(entityDTOs);
         }
     } catch (error: any) {
         printService.error(error.message);
     }
 };
+
+const history = async (sendingCountryId: string, receivingCountryId: string, sendingCurrencyCode: string, receivingCurrencyCode: string): Promise<void> => {
+    try {
+        const entityDTOs: IEntityDTO[] = await entityService.getEntityDTOs(
+            sendingCountryId,
+            receivingCountryId,
+            sendingCurrencyCode,
+            receivingCurrencyCode
+        );
+        const series: number[] = entityDTOs.map((entityDTO: IEntityDTO) => entityDTO.exchangeRate);
+        if (series.length) {
+            printService.success('Данные успешно загружены.')
+            printService.log(plot(series, {
+                height: 20,
+                min: Math.min(...series),
+                max: Math.max(...series),
+            }));
+        } else {
+            printService.warn('Нет данных для отображения.');
+        }
+    } catch (error: any) {
+        printService.error(error.message);
+    }
+}
+
+const clearHistory = async (): Promise<void> => {
+    try {
+        await entityService.deleteAll();
+        printService.success('История успешно очищена.')
+    } catch (error: any) {
+        printService.error(error.message);
+    }
+}
 
 const entities = async (sendingCountryId: string, receivingCountryIds: string[]): Promise<IEntityDTO[]> => {
     const koronapayService: KoronapayService = new KoronapayServiceImpl();
@@ -93,7 +94,7 @@ const entities = async (sendingCountryId: string, receivingCountryIds: string[])
                     sendingCurrencyCode: it.sendingCurrency.code,
                     receivingCurrencyCode: it.receivingCurrency.code,
                     exchangeRate: it.exchangeRate || 1,
-                    date: Date.now()
+                    date: Date.now().toLocaleString()
                 } as IEntityDTO
             })
             .sort((it0: IEntityDTO, it1: IEntityDTO) => {

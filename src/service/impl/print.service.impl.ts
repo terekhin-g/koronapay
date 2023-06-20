@@ -14,6 +14,10 @@ class PrintServiceImpl implements PrintService {
         console.log(message);
     }
 
+    warn(message: string): void {
+        console.log(chalk.bgYellow('Предупреждение.') + ' ' + message);
+    }
+
 }
 
 export {PrintServiceImpl}

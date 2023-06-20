@@ -5,7 +5,7 @@ interface IEntityDTO {
     sendingCurrencyCode: string,
     receivingCurrencyCode: string,
     exchangeRate: number,
-    date: number
+    date: string
 }
 
 export {IEntityDTO};
