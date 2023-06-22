@@ -12,15 +12,78 @@ import {PrintService} from "./service/print.service.js";
 import {EntityService} from "./service/entity.service.js";
 import {EntityServiceImpl} from "./service/impl/entity.service.impl.js";
 import {plot} from 'asciichart';
+import yargs, {ArgumentsCamelCase} from "yargs";
+import {hideBin} from "yargs/helpers";
+import {countries} from "./data/countries.js";
+import {currencies} from "./data/currencies.js";
 
 const printService: PrintService = new PrintServiceImpl();
 const entityService: EntityService = new EntityServiceImpl();
 
 const main = async (): Promise<void> => {
-
+    yargs(hideBin(process.argv))
+        .command('show-current', 'Отобразить значения курсов.', (yargs: yargs.Argv<{}>) => {
+            return yargs.option('save', {
+                alias: 's',
+                type: 'boolean',
+                description: '',
+                default: true
+            }).option('from', {
+                alias: 'f',
+                type: 'string',
+                description: '',
+                default: 'RUS',
+                choices: countries
+            }).option('to', {
+                alias: 't',
+                type: 'array',
+                description: '',
+                default: ['GEO'],
+                choices: countries
+            });
+        }, ({save, from, to}: ArgumentsCamelCase<{
+            save: boolean,
+            from: string,
+            to: string[]
+        }>) => showCurrent(save, from, to))
+        .command('show-history', 'Отобразить историю.', (yargs: yargs.Argv<{}>) => {
+            return yargs.option('from', {
+                alias: 'f',
+                type: 'string',
+                description: '',
+                default: 'RUS',
+                choices: countries
+            }).option('to', {
+                alias: 't',
+                type: 'string',
+                description: '',
+                default: 'GEO',
+                choices: countries
+            }).option('from-currency', {
+                alias: 'fc',
+                type: 'string',
+                description: '',
+                default: 'RUB',
+                choices: currencies
+            }).option('to-currency', {
+                alias: 'tc',
+                type: 'string',
+                description: '',
+                default: 'GEL',
+                choices: currencies
+            });
+        }, ({from, to, fromCurrency, toCurrency}: ArgumentsCamelCase<{
+            from: string,
+            to: string,
+            fromCurrency: string,
+            toCurrency: string
+        }>) => showHistory(from, to, fromCurrency, toCurrency))
+        .command('clear-history', 'Очистить историю.', (yargs: yargs.Argv<{}>) => {
+        }, ({}: ArgumentsCamelCase) => clearHistory())
+        .parse();
 }
 
-const current = async (save: boolean, sendingCountryId: string, receivingCountryIds: string[]): Promise<void> => {
+const showCurrent = async (save: boolean, sendingCountryId: string, receivingCountryIds: string[]): Promise<void> => {
     try {
         const entityDTOs: IEntityDTO[] = await entities(sendingCountryId, receivingCountryIds);
         printService.success('Данные успешно загружены.')
@@ -42,7 +105,7 @@ const current = async (save: boolean, sendingCountryId: string, receivingCountry
     }
 };
 
-const history = async (sendingCountryId: string, receivingCountryId: string, sendingCurrencyCode: string, receivingCurrencyCode: string): Promise<void> => {
+const showHistory = async (sendingCountryId: string, receivingCountryId: string, sendingCurrencyCode: string, receivingCurrencyCode: string): Promise<void> => {
     try {
         const entityDTOs: IEntityDTO[] = await entityService.getEntityDTOs(
             sendingCountryId,
