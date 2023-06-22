@@ -145,7 +145,13 @@ const entities = async (sendingCountryId: string, receivingCountryIds: string[])
         const tariffInfoDTOs: ITariffInfoDTO[] = await koronapayService.fetchTariffInfos(sendingCountryId, receivingCountryId);
         const tariffDTOs: ITariffDTO[][] = await Promise.all(tariffInfoDTOs
             .filter((tariffInfoDTO: ITariffInfoDTO) => tariffInfoDTO.receivingMethod === 'cash')
-            .map((tariffInfoDTO: ITariffInfoDTO) => koronapayService.fetchTariffs(sendingCountryId, tariffInfoDTO.sendingCurrency.id, receivingCountryId, tariffInfoDTO.receivingCurrency.id)));
+            .map((tariffInfoDTO: ITariffInfoDTO) => koronapayService.fetchTariffs(
+                sendingCountryId,
+                tariffInfoDTO.sendingCurrency.id,
+                receivingCountryId,
+                tariffInfoDTO.receivingCurrency.id,
+                tariffInfoDTO.minReceivingAmount
+            )));
         tariffDTOs
             .map((it: ITariffDTO[]) => it.pop())
             .filter((it: ITariffDTO | undefined): it is ITariffDTO => !!it)

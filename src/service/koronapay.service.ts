@@ -14,8 +14,8 @@ interface KoronapayService {
         sendingCurrencyId: string,
         receivingCountryId: string,
         receivingCurrencyId: string,
+        receivingAmount: number,
         paymentMethod?: paymentMethod,
-        receivingAmount?: number,
         receivingMethod?: receivingMethod,
         paidNotificationEnabled?: boolean
     ): Promise<ITariffDTO[]>;

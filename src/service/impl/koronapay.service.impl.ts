@@ -36,8 +36,8 @@ class KoronapayServiceImpl implements KoronapayService {
         sendingCurrencyId: string,
         receivingCountryId: string,
         receivingCurrencyId: string,
+        receivingAmount: number,
         paymentMethod: paymentMethod = 'debitCard',
-        receivingAmount: number = 100,
         receivingMethod: receivingMethod = 'cash',
         paidNotificationEnabled: boolean = false): Promise<ITariffDTO[]> {
         try {
