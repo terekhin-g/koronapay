@@ -25,9 +25,9 @@ class KoronapayServiceImpl implements KoronapayService {
             return data;
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
-                throw new Error(`Возникла ошибка [${(error as AxiosError).code}] во время получения информации о доступных тарифах для пары [${sendingCountryId}:${receivingCountryId}].`)
+                throw new Error(`An error [${(error as AxiosError).code}] occurred during fetching information about available tariffs for the [${sendingCountryId}:${receivingCountryId}] pair.`)
             }
-            throw new Error(`Возникла ошибка во время получения информации о доступных тарифах для пары [${sendingCountryId}:${receivingCountryId}].`);
+            throw new Error(`An error occurred during fetching information about available tariffs for the [${sendingCountryId}:${receivingCountryId}] pair.`);
         }
     }
 
@@ -56,9 +56,9 @@ class KoronapayServiceImpl implements KoronapayService {
             return data;
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
-                throw new Error(`Возникла ошибка [${(error as AxiosError).code}] во время получения тарифа для пары [${sendingCountryId}-${sendingCurrencyId}:${receivingCountryId}-${receivingCurrencyId}].`);
+                throw new Error(`An error [${(error as AxiosError).code}] occurred during fetching exchange rate for the pair [${sendingCountryId}-${sendingCurrencyId}:${receivingCountryId}-${receivingCurrencyId}].`);
             }
-            throw new Error(`Возникла ошибка во время получения тарифа для пары [${sendingCountryId}-${sendingCurrencyId}:${receivingCountryId}-${receivingCurrencyId}].`);
+            throw new Error(`An error occurred during fetching exchange rate for the pair [${sendingCountryId}-${sendingCurrencyId}:${receivingCountryId}-${receivingCurrencyId}].`);
         }
     }
 

@@ -3,11 +3,11 @@ import chalk from 'chalk';
 
 class PrintServiceImpl implements PrintService {
     error(message: string): void {
-        console.log(chalk.bgRed('Ошибка.') + ' ' + message);
+        console.log(chalk.bgRed('ERROR.') + ' ' + message);
     }
 
     success(message: string): void {
-        console.info(chalk.bgGreen('Успех.') + ' ' + message);
+        console.info(chalk.bgGreen('SUCCESS.') + ' ' + message);
     }
 
     log(message: string): void {
@@ -15,7 +15,7 @@ class PrintServiceImpl implements PrintService {
     }
 
     warn(message: string): void {
-        console.log(chalk.bgYellow('Предупреждение.') + ' ' + message);
+        console.log(chalk.bgYellow('WARN.') + ' ' + message);
     }
 
 }

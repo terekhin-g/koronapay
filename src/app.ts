@@ -22,22 +22,22 @@ const entityService: EntityService = new EntityServiceImpl();
 
 const main = async (): Promise<void> => {
     yargs(hideBin(process.argv))
-        .command('show-current', 'Отобразить значения курсов.', (yargs: yargs.Argv<{}>) => {
+        .command('show-current', 'Show exchange rates.', (yargs: yargs.Argv<{}>) => {
             return yargs.option('save', {
                 alias: 's',
                 type: 'boolean',
-                description: '',
+                description: 'Save request to the history.',
                 default: true
             }).option('from', {
                 alias: 'f',
                 type: 'string',
-                description: '',
+                description: 'Sending country.',
                 default: 'RUS',
                 choices: countries
             }).option('to', {
                 alias: 't',
                 type: 'array',
-                description: '',
+                description: 'Receiving country.',
                 default: ['GEO'],
                 choices: countries
             });
@@ -46,29 +46,29 @@ const main = async (): Promise<void> => {
             from: string,
             to: string[]
         }>) => showCurrent(save, from, to))
-        .command('show-history', 'Отобразить историю.', (yargs: yargs.Argv<{}>) => {
+        .command('show-history', 'Show exchange rate history.', (yargs: yargs.Argv<{}>) => {
             return yargs.option('from', {
                 alias: 'f',
                 type: 'string',
-                description: '',
+                description: 'Sending country.',
                 default: 'RUS',
                 choices: countries
             }).option('to', {
                 alias: 't',
                 type: 'string',
-                description: '',
+                description: 'Receiving country.',
                 default: 'GEO',
                 choices: countries
             }).option('from-currency', {
                 alias: 'fc',
                 type: 'string',
-                description: '',
+                description: 'Sending currency.',
                 default: 'RUB',
                 choices: currencies
             }).option('to-currency', {
                 alias: 'tc',
                 type: 'string',
-                description: '',
+                description: 'Receiving currency.',
                 default: 'GEL',
                 choices: currencies
             });
@@ -78,7 +78,7 @@ const main = async (): Promise<void> => {
             fromCurrency: string,
             toCurrency: string
         }>) => showHistory(from, to, fromCurrency, toCurrency))
-        .command('clear-history', 'Очистить историю.', () => {
+        .command('clear-history', 'Remove exchange rate history.', () => {
         }, ({}: ArgumentsCamelCase) => clearHistory())
         .parse();
 }
@@ -86,9 +86,9 @@ const main = async (): Promise<void> => {
 const showCurrent = async (save: boolean, sendingCountryId: string, receivingCountryIds: string[]): Promise<void> => {
     try {
         const entityDTOs: IEntityDTO[] = await entities(sendingCountryId, receivingCountryIds);
-        printService.success('Данные успешно загружены.')
-        const asciiTable3: AsciiTable3 = new AsciiTable3('Курс валют')
-            .setHeading('Страна отправления', 'Страна получения', 'Валюта отправления', 'Валюта получения', 'Курс')
+        printService.success('The data has been successfully loaded.')
+        const asciiTable3: AsciiTable3 = new AsciiTable3('Exchange rates')
+            .setHeading('Sending country', 'Receiving country', 'Sending currency', 'Receiving currency', 'Exchange rate')
             .addRowMatrix(entityDTOs.map((entityDTO: IEntityDTO) => [
                 entityDTO.sendingCountryId,
                 entityDTO.receivingCountryId,
@@ -115,14 +115,14 @@ const showHistory = async (sendingCountryId: string, receivingCountryId: string,
         );
         const series: number[] = entityDTOs.map((entityDTO: IEntityDTO) => entityDTO.exchangeRate);
         if (series.length) {
-            printService.success('Данные успешно загружены.')
+            printService.success('The data has been successfully loaded.')
             printService.log(plot(series, {
                 height: 20,
                 min: Math.min(...series),
                 max: Math.max(...series),
             }));
         } else {
-            printService.warn('Нет данных для отображения.');
+            printService.warn('No data to display.');
         }
     } catch (error: any) {
         printService.error(error.message);
@@ -132,7 +132,7 @@ const showHistory = async (sendingCountryId: string, receivingCountryId: string,
 const clearHistory = async (): Promise<void> => {
     try {
         await entityService.deleteAll();
-        printService.success('История успешно очищена.')
+        printService.success('History cleared successfully.')
     } catch (error: any) {
         printService.error(error.message);
     }

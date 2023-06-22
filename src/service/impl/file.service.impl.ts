@@ -15,7 +15,7 @@ class FileServiceImpl implements FileService {
         try {
             return await fs.mkdir(path);
         } catch (error: any) {
-            throw new Error('Возникал ошибка во время создания директории.')
+            throw new Error('An error occurred during creating the directory.')
         }
     }
 
@@ -23,7 +23,7 @@ class FileServiceImpl implements FileService {
         try {
             return await fs.readFile(path);
         } catch (error: any) {
-            throw new Error('Возникла ошибка во время чтения файла.')
+            throw new Error('An error occurred during reading the file.')
         }
     }
 
@@ -31,7 +31,7 @@ class FileServiceImpl implements FileService {
         try {
             return fs.writeFile(path, data);
         } catch (error: any) {
-            throw new Error('Возникла ошибка во время записи файла.')
+            throw new Error('An error occurred during writing the file.')
         }
     }
 
