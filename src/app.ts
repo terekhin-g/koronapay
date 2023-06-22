@@ -162,7 +162,7 @@ const entities = async (sendingCountryId: string, receivingCountryIds: string[])
                     receivingCountryId,
                     sendingCurrencyCode: it.sendingCurrency.code,
                     receivingCurrencyCode: it.receivingCurrency.code,
-                    exchangeRate: it.exchangeRate || 1,
+                    exchangeRate: it.exchangeRate ?? 1,
                     date: Date.now().toLocaleString()
                 } as IEntityDTO
             })
