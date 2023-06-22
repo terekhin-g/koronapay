@@ -78,7 +78,7 @@ const main = async (): Promise<void> => {
             fromCurrency: string,
             toCurrency: string
         }>) => showHistory(from, to, fromCurrency, toCurrency))
-        .command('clear-history', 'Очистить историю.', (yargs: yargs.Argv<{}>) => {
+        .command('clear-history', 'Очистить историю.', () => {
         }, ({}: ArgumentsCamelCase) => clearHistory())
         .parse();
 }
