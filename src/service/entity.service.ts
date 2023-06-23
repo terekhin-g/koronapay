@@ -1,16 +1,16 @@
-import {IEntityDTO} from "../domain/entity.dto";
+import { IEntityDTO } from '../domain/entity.dto';
 
 interface EntityService {
-    createEntities(entityDTOs: IEntityDTO[]): Promise<IEntityDTO[]>;
+	createEntities(entityDTOs: IEntityDTO[]): Promise<IEntityDTO[]>;
 
-    deleteAll(): Promise<number>;
+	deleteAll(): Promise<number>;
 
-    getEntityDTOs(
-        sendingCountryId: string,
-        receivingCountryId: string,
-        sendingCurrencyCode: string,
-        receivingCurrencyCode: string
-    ): Promise<IEntityDTO[]>
+	getEntityDTOs(
+		sendingCountryId: string,
+		receivingCountryId: string,
+		sendingCurrencyCode: string,
+		receivingCurrencyCode: string
+	): Promise<IEntityDTO[]>;
 }
 
-export {EntityService};
+export { EntityService };

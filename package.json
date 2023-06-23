@@ -9,7 +9,10 @@
     "koronapay": "dist/app.js"
   },
   "scripts": {
-    "prestart": "tsc",
+    "lint": "eslint src/**",
+    "lint:fix": "eslint src/** --fix",
+    "build": "npm run lint:fix && tsc",
+    "prestart": "npm run build",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,9 +38,16 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1",
     "@types/asciichart": "^1.5.6",
+    "@types/node": "^20.3.1",
     "@types/uuid": "^9.0.2",
-    "@types/yargs": "^17.0.24"
+    "@types/yargs": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.3"
   }
 }
