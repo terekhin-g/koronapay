@@ -104,7 +104,14 @@ const main = async (): Promise<void> => {
 				toCurrency: string;
 			}>) => showHistory(from, to, fromCurrency, toCurrency)
 		)
-		.command('clear-history', 'Remove exchange rate history.')
+		.command(
+			'clear-history',
+			'Remove exchange rate history.',
+			() => {},
+			() => {
+				return clearHistory();
+			}
+		)
 		.parse();
 };
 
