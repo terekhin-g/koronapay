@@ -14,8 +14,8 @@ import { EntityServiceImpl } from './service/impl/entity.service.impl.js';
 import { plot } from 'asciichart';
 import yargs, { ArgumentsCamelCase } from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { countries } from './data/countries.js';
-import { currencies } from './data/currencies.js';
+import { countries } from './config/countries.config.js';
+import { currencies } from './config/currencies.config.js';
 
 const printService: PrintService = new PrintServiceImpl();
 const entityService: EntityService = new EntityServiceImpl();
