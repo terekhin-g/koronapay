@@ -157,7 +157,7 @@ const showHistory = async (
 			printService.success('The data has been successfully loaded.');
 			printService.log(
 				plot(series, {
-					height: 20,
+					height: 32,
 					min: Math.min(...series),
 					max: Math.max(...series)
 				})
