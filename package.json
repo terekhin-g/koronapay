@@ -3,16 +3,17 @@
   "version": "0.0.1",
   "private": false,
   "description": "CLI to get currency rates from koronapay",
-  "main": "app.js",
+  "main": "dist/app.js",
   "type": "module",
   "bin": {
-    "koronapay": "app.js"
+    "koronapay": "dist/app.js"
   },
   "scripts": {
     "lint": "eslint src/**",
     "lint:fix": "eslint src/** --fix",
     "build": "npm run lint:fix && tsc",
     "prestart": "npm run build",
+    "prepublish": "npm run build",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
