@@ -1,6 +1,6 @@
 {
   "name": "koronapay",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "CLI to get currency rates from koronapay",
   "main": "dist/app.js",
