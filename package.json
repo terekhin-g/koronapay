@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "description": "CLI to get currency rates from koronapay",
-  "main": "dist/app.js",
+  "main": "app.js",
   "type": "module",
   "bin": {
-    "koronapay": "dist/app.js"
+    "koronapay": "app.js"
   },
   "scripts": {
     "lint": "eslint src/**",
