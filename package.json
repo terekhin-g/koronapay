@@ -8,6 +8,10 @@
   "bin": {
     "koronapay": "dist/app.js"
   },
+  "engines": {
+    "node": ">=14.21.3"
+  },
+  "engineStrict": true,
   "scripts": {
     "lint": "eslint src/**",
     "lint:fix": "eslint src/** --fix",
