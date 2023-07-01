@@ -4,3 +4,4 @@ src
 .prettierrc
 .eslintrc
 tsconfig.json
+.github
