@@ -20,7 +20,7 @@ v18.16.0
 
 ## Table of contents
 
-- [Project Name](#koronapay)
+- [Koronapay](#koronapay)
     - [Prerequisites](#prerequisites)
     - [Table of contents](#table-of-contents)
     - [Installation](#installation)
