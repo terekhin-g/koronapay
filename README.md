@@ -5,7 +5,7 @@
 
 > CLI to get actual exchange rates from [koronapay service](https://koronapay.com/transfers/online/).
 
-![koronapay](https://github.com/terekhin-g/koronapay/blob/develop/readme/)
+![koronapay](https://github.com/terekhin-g/koronapay/blob/develop/readme/show-current.png)
 
 ## Prerequisites
 
