@@ -1,9 +1,9 @@
-node_modules
-.idea
-src
+node_modules/
+.idea/
+src/
 .prettierrc
 .eslintrc
 tsconfig.json
-.github
+.github/
 LICENSE.md
-readme
+readme/
