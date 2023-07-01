@@ -1,6 +1,6 @@
 {
   "name": "koronapay",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": false,
   "description": "CLI to get currency rates from koronapay",
   "main": "dist/main.js",
@@ -33,7 +33,7 @@
     "type": "git",
     "url": "https://github.com/terekhin-g/koronapay"
   },
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "ascii-table3": "^0.8.2",
     "asciichart": "^1.5.25",
