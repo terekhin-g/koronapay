@@ -5,6 +5,8 @@
 
 > CLI to get actual exchange rates from [koronapay service](https://koronapay.com/transfers/online/).
 
+![koronapay](https://github.com/terekhin-g/koronapay/blob/develop/readme/)
+
 ## Prerequisites
 
 This project requires NodeJS (version 14.21.3 or later) and NPM.
@@ -198,4 +200,4 @@ See also the list of [contributors](https://github.com/terekhin-g/koronapay/grap
 
 ## License
 
-[ISC License](https://github.com/terekhin-g/koronapay/blob/main/LICENSE.md) © George Terekhin
+[ISC License](https://github.com/terekhin-g/koronapay/blob/develop/LICENSE.md) © George Terekhin
