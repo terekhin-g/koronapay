@@ -11,6 +11,7 @@ import { currencies } from './config/currencies.config.js';
 import { KoronapayService } from './service/koronapay.service.js';
 import { KoronapayServiceImpl } from './service/impl/koronapay.service.impl.js';
 import { App } from './app.js';
+import { display } from './config/display.config.js';
 
 const main = async (): Promise<void> => {
 	const printService: PrintService = new PrintServiceImpl();
@@ -86,19 +87,28 @@ const main = async (): Promise<void> => {
 						description: 'Receiving currency.',
 						default: 'GEL',
 						choices: currencies
+					})
+					.option('display', {
+						alias: 'd',
+						type: 'string',
+						description: 'Display method.',
+						default: 'graph',
+						choices: ['table', 'graph']
 					});
 			},
 			({
 				from,
 				to,
 				fromCurrency,
-				toCurrency
+				toCurrency,
+				display
 			}: ArgumentsCamelCase<{
 				from: string;
 				to: string;
 				fromCurrency: string;
 				toCurrency: string;
-			}>) => app.showHistory(from, to, fromCurrency, toCurrency)
+				display: display;
+			}>) => app.showHistory(from, to, fromCurrency, toCurrency, display)
 		)
 		.command(
 			'clear-history',

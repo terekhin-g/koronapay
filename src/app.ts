@@ -7,6 +7,8 @@ import { ITariffDTO } from './domain/koronapay/tariff.dto.js';
 import { v4 as uuidv4 } from 'uuid';
 import { plot } from 'asciichart';
 import { AsciiTable3 } from 'ascii-table3';
+import { display } from './config/display.config.js';
+import moment from 'moment';
 
 class App {
 	constructor(
@@ -43,7 +45,8 @@ class App {
 		sendingCountryId: string,
 		receivingCountryId: string,
 		sendingCurrencyCode: string,
-		receivingCurrencyCode: string
+		receivingCurrencyCode: string,
+		display: display
 	): Promise<void> {
 		try {
 			const entityDTOs: IEntityDTO[] = await this.entityService.getEntityDTOs(
@@ -55,13 +58,22 @@ class App {
 			const series: number[] = entityDTOs.map((entityDTO: IEntityDTO) => entityDTO.exchangeRate);
 			if (series.length) {
 				this.printService.success('The data has been successfully loaded.');
-				this.printService.log(
-					plot(series, {
-						height: 32,
-						min: Math.min(...series),
-						max: Math.max(...series)
-					})
-				);
+				if (display === 'graph') {
+					this.printService.log(
+						plot(series, {
+							height: 32,
+							min: Math.min(...series),
+							max: Math.max(...series)
+						})
+					);
+				} else {
+					const asciiTable3: AsciiTable3 = new AsciiTable3('Exchange rates')
+						.setHeading('Date and time', 'Exchange rate')
+						.addRowMatrix(
+							entityDTOs.map((entityDTO: IEntityDTO) => [moment.unix(entityDTO.date).format(), entityDTO.exchangeRate])
+						);
+					this.printService.log(asciiTable3.toString());
+				}
 			} else {
 				this.printService.warn('No data to display.');
 			}
@@ -110,7 +122,7 @@ class App {
 						sendingCurrencyCode: it.sendingCurrency.code,
 						receivingCurrencyCode: it.receivingCurrency.code,
 						exchangeRate: it.exchangeRate ?? 1,
-						date: Date.now().toLocaleString()
+						date: moment().unix()
 					} as IEntityDTO;
 				})
 				.sort((it0: IEntityDTO, it1: IEntityDTO) => {
