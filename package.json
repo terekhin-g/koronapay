@@ -3,10 +3,10 @@
   "version": "0.0.3",
   "private": false,
   "description": "CLI to get currency rates from koronapay",
-  "main": "dist/app.js",
+  "main": "dist/main.js",
   "type": "module",
   "bin": {
-    "koronapay": "dist/app.js"
+    "koronapay": "dist/main.js"
   },
   "engines": {
     "node": ">=14.21.3"
@@ -18,7 +18,7 @@
     "build": "npm run lint:fix && tsc",
     "prestart": "npm run build",
     "prepublish": "npm run build",
-    "start": "node dist/app.js",
+    "start": "node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
